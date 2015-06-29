@@ -8,10 +8,17 @@ app.engine('handlebars', handlebars.engine);
 app.set('port', process.env.PORT || 3000);
 app.set('view engine', 'handlebars');
 app.use(express.static(__dirname + '/public'));
+
+// routes
+app.use(function(req, res, next){
+    res.locals.showTests = app.get('env') !== 'production' && req.query.test === '1';
+    next();
+});
 app.get('/', function(req, res) {
     res.render('home');
 });
-app.get('/about', function(req, res) {
+
+function getFortune(){
     var fortunes = [
         "Conquer your fears or they will conquer you.",
         "Rivers need springs.",
@@ -19,9 +26,14 @@ app.get('/about', function(req, res) {
         "You will have a pleasant surprise.",
         "Whenever possible, keep it simple.",
     ];
-    var randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
+    return fortunes[Math.floor(Math.random() * fortunes.length)];
+};
+
+app.get('/about', function(req, res) {
+
     res.render('about',{
-        fortune : randomFortune
+        fortune : getFortune(),
+        pageTestScript: '/qa/tests-about.js'
     });
 });
 // 404 catch-all handler (middleware)
