@@ -1,3 +1,6 @@
+/* jshint -W097 */
+/*global suite, test,assert, $, document */
+'use strict';
 suite('About Tests', function () {
     test('page has a valid title', function () {
         assert(document.title && document.title.match(/\S/) &&
@@ -8,5 +11,5 @@ suite('About Tests', function () {
 suite('"About" Page Tests', function () {
     test('page should contain link to contact page', function () {
         assert($('a[href="/contact"]').length);
-    })
+    });
 });
